@@ -34,6 +34,7 @@ const createRouter = function (collection) {
   // Create
   router.post('/', (req, res)=>{
     const newData = req.body;
+    console.log("New entry received")
     collection
       .insertOne(newData)
       .then((result) => {
@@ -43,8 +44,26 @@ const createRouter = function (collection) {
         console.error(err);
         res.status(500);
         res.json({ status: 500, error: err });
-      });
+      });    
   })
+
+  //Destroy
+  router.delete('/:id', (req, res) => {
+    const id = req.params.id
+    console.log("Delete request received")
+    collection
+    .deleteOne({_id: ObjectID(id)})
+    .then((result) => {
+      res.json(result)
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500);
+        res.json({ status: 500, error: err });
+      });    
+  })
+
+
 
   return router;
 };
